@@ -13,7 +13,6 @@ namespace FileThreading
 
         public static void Main(string[] args)
         {
-
             // Setup test directories
             if (!ImportDir.Exists)
                 ImportDir.Create();

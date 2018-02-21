@@ -13,7 +13,7 @@ namespace FileThreading
                 var path = string.Concat(dir.FullName, Path.DirectorySeparatorChar, Guid.NewGuid(), ".txt");
                 using (var sw = File.CreateText(path))
                 {
-                    var paragraphs = DeFinibusBonorumEtMalorum.GetRandomParagraphs(rng.Next(3, 100));
+                    var paragraphs = DeFinibusBonorumEtMalorum.GetRandomParagraphs(rng.Next(3, 119));
                     foreach (var paragraph in paragraphs)
                         sw.WriteLine(paragraph);
                 }
