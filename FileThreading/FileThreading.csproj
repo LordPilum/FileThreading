@@ -42,8 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeFinibusBonorumEtMalorum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestFileGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

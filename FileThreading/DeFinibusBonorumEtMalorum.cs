@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileThreading
 {
     public class DeFinibusBonorumEtMalorum
     {
-        public string Text => string.Join("\n", _liberSecundus);
+        public static string GetText => string.Join("\n", LiberSecundus).Substring(1);
 
-        public string GetChapter(int chapterNo)
+        public static string GetParagraph(int paragraphNo)
         {
-            return _liberSecundus[chapterNo];
+            return LiberSecundus[paragraphNo];
         }
 
-        public string RandomChapters(int numberOfChapters)
+        public static List<string> GetRandomParagraphs(int numberOfChapters)
         {
-            if (numberOfChapters >= _liberSecundus.Count)
-                return Text;
+            if (numberOfChapters > LiberSecundus.Count)
+                numberOfChapters = LiberSecundus.Count;
 
-            var returnString = string.Empty;
+            var chapters = new List<string>();
             var usedNumbers = new HashSet<int>();
             var rng = new Random();
 
@@ -29,17 +26,22 @@ namespace FileThreading
                 int randomNumber;
                 do
                 {
-                    randomNumber = rng.Next();
-                } while (!usedNumbers.Contains(randomNumber));
+                    randomNumber = rng.Next(0, LiberSecundus.Count-1);
+                } while (usedNumbers.Contains(randomNumber));
 
                 usedNumbers.Add(randomNumber);
-                returnString += string.Concat(GetChapter(randomNumber), "\n");
+                chapters.Add(GetParagraph(randomNumber));
             }
 
-            return returnString;
+            return chapters;
         }
 
-        private readonly List<string> _liberSecundus = new List<string>
+        public static string GetRandomParagraphsAsString(int numberOfChapters)
+        {
+            return numberOfChapters >= LiberSecundus.Count ? GetText : string.Join("\n", GetRandomParagraphs(numberOfChapters)).Substring(1);
+        }
+
+        private static readonly List<string> LiberSecundus = new List<string>
         {
             "Hic cum uterque me intueretur seseque ad audiendum significarent paratos, Primum, inquam, deprecor, ne me tamquam philosophum putetis scholam vobis aliquam explicaturum, quod ne in ipsis quidem philosophis magnopere umquam probavi.quando enim Socrates, qui parens philosophiae iure dici potest, quicquam tale fecit? eorum erat iste mos qui tum sophistae nominabantur, quorum e numero primus est ausus Leontinus Gorgias in conventu poscere quaestionem, id est iubere dicere, qua de re quis vellet audire. audax negotium, dicerem impudens, nisi hoc institutum postea translatum ad philosophos nostros esset.",
             "Sed et illum, quem nominavi, et ceteros sophistas, ut e Platone intellegi potest, lusos videmus a Socrate. is enim percontando atque interrogando elicere solebat eorum opiniones, quibuscum disserebat, ut ad ea, quae ii respondissent, si quid videretur, diceret.qui mos cum a posterioribus non esset retentus, Arcesilas eum revocavit instituitque ut ii, qui se audire vellent, non de se quaererent, sed ipsi dicerent, quid sentirent; quod cum dixissent, ille contra.sed eum qui audiebant, quoad poterant, defendebant sententiam suam.apud ceteros autem philosophos, qui quaesivit aliquid, tacet; quod quidem iam fit etiam in Academia.ubi enim is, qui audire vult, ita dixit: 'Voluptas mihi videtur esse summum bonum', perpetua oratione contra disputatur, ut facile intellegi possit eos, qui aliquid sibi videri dicant, non ipsos in ea sententia esse, sed audire velle contraria.",

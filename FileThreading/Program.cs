@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FileThreading
@@ -24,28 +22,31 @@ namespace FileThreading
             if (!ErrorDir.Exists)
                 ErrorDir.Create();
 
-            //Create scheduler from MSDN example and specify max tasks
-            var scheduler = TaskScheduler.Default; //LimitedConcurrencyTaskScheduler(10);
+            // Generate test files.
+            TestFileGenerator.Execute(ImportDir);
+            
+            // Create scheduler and task factory
+            var scheduler = TaskScheduler.Default;
             var factory = new TaskFactory(scheduler);
             
-            //Do the work
+            // Do the work
             var tasks = new List<Task>();
             foreach (var file in ImportDir.GetFiles())
-                tasks.Add(factory.StartNew(() => ProcessFile(file));
+                tasks.Add(factory.StartNew(() => ProcessFile(file)));
 
-            //Wait for the work to complete
+            // Wait for the work to complete
             Task.WaitAll(tasks.ToArray());
         }
 
         private static void ProcessFile(FileInfo file)
         {
-            var fs = File.Open(file.FullName, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            var fs = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             using (var sr = new StreamReader(fs))
             {
-                
+                Console.WriteLine(sr);
             }
             fs.Close();
-            File.Move(file.FullName, string.Concat(OkDir.FullName, Path.DirectorySeparatorChar, file.Name));
+            file.MoveTo(string.Concat(OkDir.FullName, Path.DirectorySeparatorChar, file.Name));
         }
     }
 }
